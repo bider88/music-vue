@@ -3,6 +3,6 @@
     .container
       .content.has-text-centered
         p 💻 with ❤ 
-          a(href="https://twitter.com/didiersa" target="_blank") @didiersa
+          a(href="https://twitter.com/didiersa", target="_blank") @didiersa
 
 </template>

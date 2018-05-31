@@ -1,7 +1,7 @@
 <template lang="pug">
     .card
       .card-image
-        figure.image.is-1by1
+        figure.image.is-1by1.mouse-pointer(@click="selectTrack")
           img(:src="track.album.images[0].url")
       .card-content
         .media
@@ -27,8 +27,20 @@ export default {
   methods: {
     selectTrack () {
       this.$emit('select', this.track.id)
+      this.$bus.$emit('set-track', this.track)
     }
   }
 }
 </script>
+<style lang="scss" scoped>
+  .card {
+    -webkit-box-shadow: -2px 2px 16px 1px rgba(186,252,208,1);
+    -moz-box-shadow: -2px 2px 16px 1px rgba(186,252,208,1);
+    box-shadow: -2px 2px 16px 1px rgba(186,252,208,1);
+  }
+  .mouse-pointer {
+    cursor: pointer;
+  }
+</style>
+
 
