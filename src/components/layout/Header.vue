@@ -7,7 +7,8 @@
               .navbar-item
                 strong 📻 Music Vue
           .navbar-end.navbar-menu
-
+            router-link.navbar-item(to="/") Buscar
+            router-link.navbar-item(to="about") Acerca de
     .hero-body
       .container.has-text-centered
         h1.title Music Vue
