@@ -1,8 +1,10 @@
 <template lang="pug">
   #app
     mv-header
+    mv-notification(v-show="showNotification")
+      p(slot="body") No se encontraron resultados ☹
     section.section
-      nav.navbar.has-shadow
+      nav.navbar  
         .container
           .field-body
             form.field.has-addons(@submit.prevent="search")
@@ -15,21 +17,28 @@
       .container
         p(v-show="showResultMessage")
           small {{ searchMessage }}
-      .container.results
-        .columns(v-for="t in tracks") 
-          .column.is-three-fifths.is-offset-one-fifth
-            .box {{ t.name }} - {{ t.artists[0].name }}
       .container
         .spinner
           ring-loader(:loading="loading" :color="color" :size="size")
+      .container.results
+        .columns.is-multiline
+          .column.is-one-quarter(v-for="t in tracks")
+            //- .box {{ t.name }} - {{ t.artists[0].name }}
+            mv-track(:class="{ 'is-active' : t .id ===selectedTrack }" :track="t" @select="setSelectedTrack")
     mv-footer
 </template>
 
 <script>
-import RingLoader from 'vue-spinner/src/RingLoader.vue'
-import trackService from './services/track'
-import MvFooter from './components/layout/Footer.vue'
-import MvHeader from './components/layout/Header.vue'
+import RingLoader from 'vue-spinner/src/RingLoader'
+
+import MvFooter from '@/components/layout/Footer'
+import MvHeader from '@/components/layout/Header'
+
+import trackService from '@/services/track'
+
+import MvTrack from '@/components/Track'
+
+import MvNotification from '@/components/shared/Notification'
 
 export default {
   name: 'app',
@@ -40,17 +49,24 @@ export default {
       showResultMessage: false,
       loading: false,
       color: '#1496ED',
-      size: '60px'
+      size: '60px',
+      selectedTrack: '',
+      showNotification: false
     }
   },
-  components: {
-    RingLoader,
-    MvFooter,
-    MvHeader
-  },
+  components: { RingLoader, MvFooter, MvHeader, MvTrack, MvNotification },
   computed: {
     searchMessage () {
       return `Se encontraron ${this.tracks.length} resultado${this.tracks.length !== 1 ? 's' : ''}`
+    }
+  },
+  watch: {
+    showNotification () {
+      if (this.showNotification) {
+        setTimeout(() => {
+          this.showNotification = false
+        }, 3000)
+      }
     }
   },
   methods: {
@@ -63,6 +79,7 @@ export default {
         .then(res => {
           this.tracks = res.tracks.items
           this.showResultMessage = true
+          this.showNotification = res.tracks.total === 0
           this.loading = false
         })
     },
@@ -70,6 +87,9 @@ export default {
       this.searchQuery = ''
       this.tracks = []
       this.showResultMessage = false
+    },
+    setSelectedTrack (id) {
+      this.selectedTrack = id
     }
   }
 }
@@ -83,5 +103,8 @@ export default {
   .spinner {
     margin: 50px auto;
     width: 75px;
+  }
+  .is-active {
+    border: 2px #23d160 solid;
   }
 </style>
