@@ -1,14 +1,35 @@
 <template lang="pug">
-  .container
+  .container(v-if="track && track.album")
     .columns
-      .column.is-5.is-offset-4
-        mv-track(:track="track")
+      .column.is-3.has-text-centered
+        figure.media-left
+          p.image
+            img(:src="track.album.images[0].url")
+          p
+            a.button.is-primary.is-large
+              span.icon(@click="selectTrack") ▶
+      .column.is-8
+        .panel
+          .panel-heading
+            h1.title {{ track.name }}
+          .panel-block
+            article.media
+              .media-content
+                .content
+                  ul(v-for="(v, k) in track")
+                    li
+                      strong {{ k }}:&nbsp;
+                      span {{ v }}
+              .nav.level
+                .level-left
+                  a.level-item
 </template>
 <script>
-import MvTrack from '@/components/Track'
 import trackService from '@/services/track'
+import trackMixin from '@/mixins/track'
+
 export default {
-  components: { MvTrack },
+  mixins: [ trackMixin ],
   data () {
     return {
       track: {}

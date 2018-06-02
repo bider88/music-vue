@@ -14,11 +14,11 @@
       .container
         p(v-show="showResultMessage")
           small {{ searchMessage }}
-      mv-notification(v-show="showNotification")
-        p(slot="body") No se encontraron resultados ☹
-      .container
-        .spinner
-          ring-loader(:loading="loading", :color="color", :size="size")
+      transition(name="move")
+        mv-notification(v-show="showNotification")
+          p(slot="body") No se encontraron resultados ☹
+      .spinner
+        ring-loader(:loading="loading", :color="color", :size="size")
       .container.results
         .columns.is-multiline
           .column.is-one-quarter(v-for="t in tracks")
