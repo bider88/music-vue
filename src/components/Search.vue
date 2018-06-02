@@ -22,7 +22,7 @@
       .container.results
         .columns.is-multiline
           .column.is-one-quarter(v-for="t in tracks")
-            mv-track(:class="{ 'is-active' : t .id ===selectedTrack }", :track="t", @select="setSelectedTrack")
+            mv-track(v-blur="t.preview_url" :class="{ 'is-active' : t .id ===selectedTrack }", :track="t", @select="setSelectedTrack")
 </template>
 
 <script>
