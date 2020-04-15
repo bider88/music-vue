@@ -15,7 +15,8 @@ Vue.use(blur)
 
 const router = new VueRouter({
   routes,
-  mode: 'history'
+  mode: 'history',
+  base: '/music-vue/'
 })
 
 new Vue({
